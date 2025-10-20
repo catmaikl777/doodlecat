@@ -65,6 +65,8 @@ class DoodleJumpGame {
     this.sprites = { player: {}, platforms: {}, items: {}, effects: {}, ui: {}, background: {} };
     this.spritesLoaded = false;
 
+    this.hideLoadingScreen();
+
     this.init();
     this.setupEventListeners();
     this.setupSocketListeners();
