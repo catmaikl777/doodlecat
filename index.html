@@ -5,15 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Онлайн Doodle Jump</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .achievement {
+            background: linear-gradient(45deg, #FFD700, #FFA000);
+            color: white;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 8px;
+            animation: slideIn 0.5s ease;
+            transform: translateX(100%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border-left: 4px solid #FF6B6B;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .power-up-indicator {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 2px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .rocket-indicator { background: linear-gradient(45deg, #FF5722, #FF8A65); }
+        .shield-indicator { background: linear-gradient(45deg, #4FC3F7, #81D4FA); }
+        .magnet-indicator { background: linear-gradient(45deg, #E91E63, #F48FB1); }
+        
+        .jump-btn {
+            width: 70px;
+            height: 70px;
+            font-size: 24px;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border: 3px solid white;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            position: fixed;
+            right: 20px;
+            bottom: 100px;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
+        }
+        
+        .jump-btn:active {
+            transform: scale(0.95);
+            background: linear-gradient(45deg, #45a049, #4CAF50);
+        }
+        
+        .server-status {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        
+        .server-online {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .server-offline {
+            background: #f44336;
+            color: white;
+        }
+        
+        .connection-info {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="game-header">
-            <h1>Онлайн Doodle Jump</h1>
+            <h1>🎯 Онлайн Doodle Jump</h1>
             <div class="game-info">
                 <div class="score">Очки: <span id="score">0</span></div>
-                <div class="players">Игроков онлайн: <span id="player-count">1</span></div>
+                <div class="coins">Монеты: <span id="coins">0</span></div>
+                <div class="players">
+                    Игроков: <span id="player-count">0</span>
+                    <span id="serverStatus" class="server-status server-offline">Offline</span>
+                </div>
             </div>
+            <div class="power-ups">
+                <span id="rocketIndicator" class="power-up-indicator rocket-indicator" style="display: none;">🚀 Ракета</span>
+                <span id="shieldIndicator" class="power-up-indicator shield-indicator" style="display: none;">🛡️ Щит</span>
+                <span id="magnetIndicator" class="power-up-indicator magnet-indicator" style="display: none;">🧲 Магнит</span>
+            </div>
+            <div id="connectionInfo" class="connection-info"></div>
         </div>
         
         <div class="game-container">
@@ -23,29 +111,39 @@
                 <div class="control-buttons">
                     <button id="leftBtn" class="control-btn">←</button>
                     <button id="rightBtn" class="control-btn">→</button>
+                    <button id="jumpBtn" class="jump-btn">↑</button>
                 </div>
-                <div class="mobile-info">Используйте кнопки или наклоняйте устройство</div>
+                <div class="mobile-info">
+                    📱 Используйте кнопки или наклоняйте устройство
+                    <div>← → для движения, ↑ для прыжка</div>
+                </div>
             </div>
             
             <div class="game-over" id="gameOver">
-                <h2>Игра окончена!</h2>
+                <h2>🎮 Игра окончена!</h2>
                 <p>Ваш счет: <span id="finalScore">0</span></p>
-                <button id="restartBtn">Играть снова</button>
+                <p>Собрано монет: <span id="finalCoins">0</span></p>
+                <button id="restartBtn">🔄 Играть снова</button>
             </div>
             
             <div class="waiting" id="waiting">
+                <div class="loading-spinner"></div>
                 <p>Подключение к серверу...</p>
             </div>
         </div>
         
         <div class="players-list">
-            <h3>Игроки онлайн:</h3>
-            <ul id="playersList"></ul>
+            <h3>👥 Игроки онлайн:</h3>
+            <ul id="playersList">
+                <li class="waiting-player">Загрузка...</li>
+            </ul>
         </div>
+        
+        <div id="achievements" class="achievements-container"></div>
     </div>
-    
-    <!-- Загружаем socket.io клиентскую библиотеку -->
-    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Socket.IO CDN -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script src="game.js"></script>
 </body>
 </html>

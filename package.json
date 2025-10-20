@@ -1,20 +1,21 @@
 {
-  "name": "doodle-jump-online",
+  "name": "doodle-jump-backend",
   "version": "1.0.0",
-  "description": "Multiplayer Doodle Jump Game",
-  "main": "serv.js",
+  "description": "Backend for Doodle Jump Online",
+  "main": "server.js",
   "scripts": {
-    "start": "node serv.js",
-    "dev": "node serv.js"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "socket.io": "^4.7.2"
+    "socket.io": "^4.7.2",
+    "cors": "^2.8.5"
   },
   "engines": {
     "node": ">=18.x"
   },
-  "keywords": ["game", "multiplayer", "doodle-jump"],
+  "keywords": ["game", "multiplayer", "socket.io"],
   "author": "Your Name",
   "license": "MIT"
 }
