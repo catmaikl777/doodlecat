@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Онлайн Doodle Jump</title>
-    <link rel="stylesheet" href="style.css">
+    <title>🎯 Онлайн Doodle Jump</title>
+    <link rel="stylesheet" href="/style.css">
     <style>
         .achievement {
             background: linear-gradient(45deg, #FFD700, #FFA000);
@@ -16,6 +16,7 @@
             transform: translateX(100%);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             border-left: 4px solid #FF6B6B;
+            font-weight: bold;
         }
         
         @keyframes slideIn {
@@ -61,10 +62,11 @@
         }
         
         .server-status {
-            padding: 8px 12px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             margin-left: 10px;
+            font-weight: bold;
         }
         
         .server-online {
@@ -81,6 +83,21 @@
             font-size: 12px;
             opacity: 0.8;
             margin-top: 5px;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4CAF50;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -101,7 +118,7 @@
                 <span id="shieldIndicator" class="power-up-indicator shield-indicator" style="display: none;">🛡️ Щит</span>
                 <span id="magnetIndicator" class="power-up-indicator magnet-indicator" style="display: none;">🧲 Магнит</span>
             </div>
-            <div id="connectionInfo" class="connection-info"></div>
+            <div id="connectionInfo" class="connection-info">Подключение к серверу...</div>
         </div>
         
         <div class="game-container">
@@ -123,7 +140,7 @@
                 <h2>🎮 Игра окончена!</h2>
                 <p>Ваш счет: <span id="finalScore">0</span></p>
                 <p>Собрано монет: <span id="finalCoins">0</span></p>
-                <button id="restartBtn">🔄 Играть снова</button>
+                <button id="restartBtn" class="restart-btn">🔄 Играть снова</button>
             </div>
             
             <div class="waiting" id="waiting">
@@ -144,6 +161,6 @@
 
     <!-- Socket.IO CDN -->
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-    <script src="game.js"></script>
+    <script type="module" src="/game.js"></script>
 </body>
 </html>

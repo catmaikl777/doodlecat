@@ -28,13 +28,15 @@ class DoodleJumpGame {
       magnetActive: false,
       magnetTime: 0,
       combo: 0,
+      achievements: [],
     };
 
     // Размеры объектов
     this.sizes = {
-      player: { width: 40, height: 40 },
-      platform: { width: 70, height: 15 },
+      player: { width: 46, height: 46 },
+      platform: { width: 70, height: 18 },
       coin: { width: 20, height: 20 },
+      shield: { width: 24, height: 24 },
     };
 
     this.player = {
@@ -57,13 +59,24 @@ class DoodleJumpGame {
     this.particles = [];
     this.cameraY = 0;
     this.animationFrame = 0;
+    this.enemies = [];
+
+    // Инициализация контейнеров для спрайтов
+    this.sprites = { player: {}, platforms: {}, items: {}, effects: {}, ui: {}, background: {} };
+    this.spritesLoaded = false;
 
     this.init();
     this.setupEventListeners();
     this.setupSocketListeners();
     this.generateInitialPlatforms();
     this.generateInitialItems();
-    this.gameLoop();
+    this.generateInitialEnemies && this.generateInitialEnemies();
+
+    // Загрузка спрайтов из каталога sprites/
+    this.loadSpritesFromImages().then(() => {
+      this.spritesLoaded = true;
+      this.gameLoop();
+    });
 
     // Проверка соединения с сервером
     this.checkServerConnection();
@@ -97,19 +110,58 @@ class DoodleJumpGame {
     }
   }
 
-  async loadAllSprites() {
-    try {
-      await this.loadPlayerSprites();
-      await this.loadPlatformSprites();
-      await this.loadBackgroundSprites();
-      await this.loadItemSprites();
-      await this.loadEffectSprites();
-      await this.loadUISprites();
-      console.log("Все спрайты загружены");
-    } catch (error) {
-      console.error("Ошибка загрузки спрайтов:", error);
-      this.createFallbackSprites();
-    }
+  // Загрузка спрайтов из файлов в каталоге sprites/
+  loadSpritesFromImages() {
+    const loadImage = (src) =>
+      new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+      });
+
+    const tasks = [];
+
+    // Player
+    tasks.push(loadImage("sprites/player/player_normal.png").then((img) => (this.sprites.player.normal = img)));
+    tasks.push(loadImage("sprites/player/player_right.png").then((img) => (this.sprites.player.right = img)));
+    tasks.push(loadImage("sprites/player/player_left.png").then((img) => (this.sprites.player.left = img)));
+    tasks.push(loadImage("sprites/player/player_jump.png").then((img) => (this.sprites.player.jump = img)));
+
+    // Platforms
+    tasks.push(loadImage("sprites/platforms/platform_green.png").then((img) => (this.sprites.platforms.green = img)));
+    tasks.push(loadImage("sprites/platforms/platform_blue.png").then((img) => (this.sprites.platforms.blue = img)));
+    tasks.push(loadImage("sprites/platforms/platform_white.png").then((img) => (this.sprites.platforms.white = img)));
+    tasks.push(loadImage("sprites/platforms/platform_spring.png").then((img) => (this.sprites.platforms.spring = img)));
+
+    // Items / enemies
+    tasks.push(loadImage("sprites/items/rocket.png").then((img) => (this.sprites.items.rocket = img)));
+    tasks.push(loadImage("sprites/items/spring.png").then((img) => (this.sprites.items.spring = img)));
+    tasks.push(loadImage("sprites/items/monster.png").then((img) => (this.sprites.items.monster = img)));
+
+    // Effects
+    tasks.push(loadImage("sprites/effects/explosion.png").then((img) => (this.sprites.effects.explosion = img)));
+    tasks.push(loadImage("sprites/effects/particle.png").then((img) => (this.sprites.effects.particle = img)));
+    tasks.push(loadImage("sprites/effects/score_popup.png").then((img) => (this.sprites.effects.scorePopup = img)));
+
+    // UI
+    tasks.push(loadImage("sprites/ui/button.png").then((img) => (this.sprites.ui.button = img)));
+    tasks.push(loadImage("sprites/ui/game_over.png").then((img) => (this.sprites.ui.gameOver = img)));
+    tasks.push(loadImage("sprites/ui/score_board.png").then((img) => (this.sprites.ui.scoreBoard = img)));
+
+    // Простой фон
+    const bgCanvas = document.createElement("canvas");
+    bgCanvas.width = this.canvas.width;
+    bgCanvas.height = this.canvas.height;
+    const bgCtx = bgCanvas.getContext("2d");
+    const gradient = bgCtx.createLinearGradient(0, 0, 0, this.canvas.height);
+    gradient.addColorStop(0, "#87CEEB");
+    gradient.addColorStop(1, "#B3E5FC");
+    bgCtx.fillStyle = gradient;
+    bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+    this.sprites.background.sky = bgCanvas;
+
+    return Promise.all(tasks);
   }
 
   async loadPlayerSprites() {
