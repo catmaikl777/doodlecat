@@ -1,28 +1,16 @@
 {
-  "name": "doodle-jump-online",
+  "name": "simplycat",
   "version": "1.0.0",
-  "description": "Multiplayer Doodle Jump with PNG sprites",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "start": "node server.js",
-    "dev:server": "node server.js"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "socket.io": "^4.7.2",
-    "cors": "^2.8.5",
     "socket.io-client": "^4.7.2"
   },
   "devDependencies": {
     "vite": "^4.4.0"
-  },
-  "engines": {
-    "node": ">=18.x"
-  },
-  "keywords": ["game", "multiplayer", "doodle-jump"],
-  "author": "Your Name",
-  "license": "MIT"
+  }
 }
