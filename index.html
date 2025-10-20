@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн Doodle Jump</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="game-header">
+            <h1>Онлайн Doodle Jump</h1>
+            <div class="game-info">
+                <div class="score">Очки: <span id="score">0</span></div>
+                <div class="players">Игроков онлайн: <span id="player-count">1</span></div>
+            </div>
+        </div>
+        
+        <div class="game-container">
+            <canvas id="gameCanvas" width="400" height="600"></canvas>
+            
+            <div class="controls">
+                <div class="control-buttons">
+                    <button id="leftBtn" class="control-btn">←</button>
+                    <button id="rightBtn" class="control-btn">→</button>
+                </div>
+                <div class="mobile-info">Используйте кнопки или наклоняйте устройство</div>
+            </div>
+            
+            <div class="game-over" id="gameOver">
+                <h2>Игра окончена!</h2>
+                <p>Ваш счет: <span id="finalScore">0</span></p>
+                <button id="restartBtn">Играть снова</button>
+            </div>
+            
+            <div class="waiting" id="waiting">
+                <p>Подключение к серверу...</p>
+            </div>
+        </div>
+        
+        <div class="players-list">
+            <h3>Игроки онлайн:</h3>
+            <ul id="playersList"></ul>
+        </div>
+    </div>
+    
+    <!-- Загружаем socket.io клиентскую библиотеку -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

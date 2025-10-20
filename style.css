@@ -1,0 +1,234 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.game-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.game-info {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-size: 1.2rem;
+}
+
+.game-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#gameCanvas {
+    background: #87CEEB;
+    border: 3px solid #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.controls {
+    text-align: center;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 10px;
+}
+
+.control-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid white;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.control-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+.mobile-info {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.game-over, .waiting {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.8);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    z-index: 10;
+}
+
+.waiting {
+    display: block;
+}
+
+.game-over {
+    display: none;
+}
+
+.game-over h2 {
+    margin-bottom: 15px;
+    color: #ff6b6b;
+}
+
+#restartBtn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+}
+
+#restartBtn:hover {
+    background: #45a049;
+}
+
+.players-list {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 10px;
+    min-width: 200px;
+    height: fit-content;
+}
+
+.players-list h3 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#playersList {
+    list-style: none;
+}
+
+#playersList li {
+    padding: 10px;
+    margin: 8px 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.player-score {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.player-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.player-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .game-header h1 {
+        font-size: 2rem;
+    }
+    
+    .game-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #gameCanvas {
+        width: 320px;
+        height: 480px;
+    }
+    
+    .control-buttons {
+        gap: 40px;
+    }
+    
+    .players-list {
+        width: 100%;
+        max-width: 320px;
+    }
+}
+
+.achievement {
+    background: linear-gradient(45deg, #FFD700, #FFA000);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+    animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+.power-up-indicator {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.rocket-indicator { background: #FF5722; }
+.shield-indicator { background: #4FC3F7; }
