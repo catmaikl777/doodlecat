@@ -9,10 +9,9 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
-      input: {
-        main: './public/index.html'
-      }
+      input: './public/index.html'
     }
   },
-  publicDir: 'public'
+  publicDir: 'public',
+  base: './'
 });

@@ -2,14 +2,15 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
 
-// Настройка CORS для фронтенда на Netlify
+// Настройка CORS для Vercel фронтенда
 const io = socketIo(server, {
   cors: {
-    origin: ["https://venerable-tiramisu-62a584.netlify.app", "http://localhost:3000"],
+    origin: ["https://doodlecat-orcin.vercel.app", "http://localhost:3000"],
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -17,7 +18,7 @@ const io = socketIo(server, {
 
 // Middleware
 app.use(cors({
-  origin: ["https://venerable-tiramisu-62a584.netlify.app", "http://localhost:3000"],
+  origin: ["https://doodlecat-orcin.vercel.app", "http://localhost:3000"],
   credentials: true
 }));
 
@@ -28,7 +29,8 @@ app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
     timestamp: new Date().toISOString(),
-    players: Object.keys(gameState.players).length
+    players: Object.keys(gameState.players).length,
+    version: '1.0.0'
   });
 });
 
@@ -40,7 +42,7 @@ const gameState = {
 
 // Socket.IO логика
 io.on('connection', (socket) => {
-  console.log('Новый игрок подключился:', socket.id);
+  console.log('🎮 Новый игрок подключился:', socket.id);
   
   // Добавляем игрока в состояние игры
   gameState.players[socket.id] = {
@@ -121,7 +123,7 @@ io.on('connection', (socket) => {
   
   // Обрабатываем отключение игрока
   socket.on('disconnect', (reason) => {
-    console.log('Игрок отключился:', socket.id, 'Причина:', reason);
+    console.log('🎮 Игрок отключился:', socket.id, 'Причина:', reason);
     
     if (gameState.players[socket.id]) {
       // Сохраняем данные игрока перед удалением
@@ -143,7 +145,7 @@ io.on('connection', (socket) => {
   
   // Обработка ошибок
   socket.on('error', (error) => {
-    console.error('Socket error:', error);
+    console.error('❌ Socket error:', error);
   });
 });
 
@@ -171,7 +173,7 @@ app.get('/api/players', (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`🚀 Сервер запущен на порту ${PORT}`);
   console.log(`📍 Health check: http://localhost:${PORT}/api/health`);
